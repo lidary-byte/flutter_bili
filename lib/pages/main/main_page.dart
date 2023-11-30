@@ -1,236 +1,193 @@
-
-
-import 'package:flutter_bili/constants/app_constants.dart';
-import 'package:flutter_bili/pages/main/main_controller.dart';
-import 'package:flutter_bili/pages/main/widget/bottom_navbar.dart';
-import 'package:flutter_bili/pages/main/widget/header_weekly_task.dart';
-import 'package:flutter_bili/pages/main/widget/main_menu.dart';
-import 'package:flutter_bili/pages/main/widget/member.dart';
-import 'package:flutter_bili/pages/main/widget/task_group.dart';
-import 'package:flutter_bili/pages/main/widget/task_in_progress.dart';
-import 'package:flutter_bili/pages/main/widget/task_menu.dart';
-import 'package:flutter_bili/pages/main/widget/weekly_task.dart';
-import 'package:flutter_bili/shared_components/header_text.dart';
-import 'package:flutter_bili/shared_components/responsive_builder.dart';
-import 'package:flutter_bili/shared_components/search_field.dart';
-import 'package:flutter_bili/shared_components/task_progress.dart';
-import 'package:flutter_bili/utils/helpers/app_helpers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_bili/config/routes/app_pages.dart';
+import 'package:flutter_bili/pages/main/main_bloc.dart';
+import 'package:flutter_bili/pages/main/main_event.dart';
+import 'package:flutter_bili/pages/main/main_state.dart';
+import 'package:flutter_bili/pages/main/widget/bottom_navbar.dart';
+import 'package:flutter_bili/pages/main/widget/slider_navbar.dart';
+import 'package:flutter_bili/shared_components/responsive_builder.dart';
+import 'package:flutter_bili/widget/search_widget.dart';
+import 'package:flutter_bili/widget/status_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class MainPage extends GetView<MainController> {
-  const MainPage({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage>
+    with SingleTickerProviderStateMixin {
+  TabController? _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this)
+      ..addListener(() {
+        // context
+        //     .read<MainBloc>()
+        //     .add(SwitchTabEvent(_tabController?.index ?? 1));
+      })
+      ..animateTo(1);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: controller.scafoldKey,
-      drawer: ResponsiveBuilder.isDesktop(context)
+      bottomNavigationBar: (!ResponsiveBuilder.isMobile(context))
           ? null
-          : Drawer(
-              child: SafeArea(
-                child: SingleChildScrollView(child: _buildSidebar(context)),
-              ),
-            ),
-      bottomNavigationBar: (ResponsiveBuilder.isDesktop(context) || kIsWeb)
-          ? null
-          : const BottomNavbar(),
+          : BottomNavbar(onSelected: (position) {}),
       body: SafeArea(
-        child: ResponsiveBuilder(
-          mobileBuilder: (context, constraints) {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTaskContent(
-                    onPressedMenu: () => controller.openDrawer(),
-                  ),
-                  _buildCalendarContent(),
-                ],
-              ),
-            );
-          },
-          tabletBuilder: (context, constraints) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  flex: constraints.maxWidth > 800 ? 8 : 7,
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: _buildTaskContent(
-                      onPressedMenu: () => controller.openDrawer(),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: const VerticalDivider(),
-                ),
-                Flexible(
-                  flex: 4,
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: _buildCalendarContent(),
-                  ),
-                ),
-              ],
-            );
-          },
-          desktopBuilder: (context, constraints) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  flex: constraints.maxWidth > 1350 ? 3 : 4,
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: _buildSidebar(context),
-                  ),
-                ),
-                Flexible(
-                  flex: constraints.maxWidth > 1350 ? 10 : 9,
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: _buildTaskContent(),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: const VerticalDivider(),
-                ),
-                Flexible(
-                  flex: 4,
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: _buildCalendarContent(),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+          child: ResponsiveBuilder(mobileBuilder: (context, constraints) {
+        return _buildPageContentWidget(context);
+      }, tabletBuilder: (context, constraints) {
+        return _buildPageContentWidget(context);
+      }, desktopBuilder: (context, constraints) {
+        return _buildPageContentWidget(context);
+      })),
     );
   }
 
-  Widget _buildSidebar(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildContentWidget(BuildContext context) {
+    return BlocProvider<MainBloc>(
+        create: (context) => MainBloc(),
+        child: BlocBuilder<MainBloc, MainState>(
+            builder: (context, state) => StatusPage(
+                  contentWidget: Expanded(
+                    child: GridView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _crossAxisCount(context), // 每行显示的列数
+                          crossAxisSpacing: 16.0, // 列之间的间距
+                          mainAxisSpacing: 8.0, // 行之间的间距
+                        ),
+                        itemBuilder: (context, index) => GestureDetector(
+                            child: Column(
+                              children: [
+                                CachedNetworkImage(
+                                  height: 140,
+                                  width: double.infinity,
+                                  imageUrl: state.recommend?[index].pic ?? '',
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(6)),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                      '${state.recommend?[index].title}',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              context.go(AppPages.videoDetailsPage, extra: {
+                                'bvid': state.recommend?[index].bvid
+                              });
+                            }),
+                        itemCount: state.recommend?.length ?? 0),
+                  ),
+                  status: state.netState,
+                  onRetry: () {
+                    context
+                        .read<MainBloc>()
+                        .add(SwitchTabEvent(_tabController?.index ?? 0));
+                  },
+                )));
+  }
+
+  int _crossAxisCount(BuildContext context) {
+    if (ResponsiveBuilder.isMobile(context)) {
+      return 2;
+    }
+    if (ResponsiveBuilder.isTablet(context)) {
+      return 3;
+    }
+    if (ResponsiveBuilder.isDesktop(context)) {
+      return 4;
+    }
+    return 1;
+  }
+
+  Widget _buildPageContentWidget(BuildContext context) {
+    return ResponsiveBuilder.isMobile(context)
+        ? Column(
+            children: [_topWidget(), _buildContentWidget(context)],
+          )
+        : Row(
+            children: [
+              Container(
+                width: 200,
+                height: double.infinity,
+                color:
+                    Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                child: SliderNavBar(onSelected: (position) {}),
+              ),
+              Expanded(
+                  child: Column(
+                children: [_topWidget(), _buildContentWidget(context)],
+              ))
+            ],
+          );
+  }
+
+  Widget _topWidget() {
+    return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: MainMenu(onSelected: controller.onSelectedMainMenu),
-        ),
-        const Divider(
-          indent: 20,
-          thickness: 1,
-          endIndent: 20,
-          height: 60,
-        ),
-        Member(member: controller.member),
-        const SizedBox(height: kSpacing),
-        TaskMenu(
-          onSelected: controller.onSelectedTaskMenu,
-        ),
-        const SizedBox(height: kSpacing),
-        Padding(
-          padding: const EdgeInsets.all(kSpacing),
-          child: Text(
-            "2021 Teamwork lisence",
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ),
+        Flexible(
+            flex: 3,
+            child: TabBar(
+              tabs: const [
+                Tab(text: '直播'),
+                Tab(text: '推荐'),
+                Tab(text: '追番'),
+                Tab(text: '影视'),
+              ],
+              controller: _tabController,
+            )),
+        Flexible(
+          flex: 1,
+          child: !ResponsiveBuilder.isMobile(context)
+              ? Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+                  height: 60,
+                  child: SearchWidget(
+                    onSearch: (keyword) {},
+                    hintText: "搜索视频",
+                  ))
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  child: TextButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(EvaIcons.search),
+                    label: const Text('Search'),
+                  ),
+                ),
+        )
       ],
     );
   }
 
-  Widget _buildTaskContent({Function()? onPressedMenu}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kSpacing),
-      child: Column(
-        children: [
-          const SizedBox(height: kSpacing),
-          Row(
-            children: [
-              if (onPressedMenu != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: kSpacing / 2),
-                  child: IconButton(
-                    onPressed: onPressedMenu,
-                    icon: const Icon(Icons.menu),
-                  ),
-                ),
-              Expanded(
-                child: SearchField(
-                  onSearch: controller.searchTask,
-                  hintText: "Search Task .. ",
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: kSpacing),
-          Row(
-            children: [
-              Expanded(
-                child: HeaderText(
-                  DateTime.now().formatdMMMMY(),
-                ),
-              ),
-              const SizedBox(width: kSpacing / 2),
-              SizedBox(
-                width: 200,
-                child: TaskProgress(data: controller.dataTask),
-              ),
-            ],
-          ),
-          const SizedBox(height: kSpacing),
-          TaskInProgress(data: controller.taskInProgress),
-          const SizedBox(height: kSpacing * 2),
-          const HeaderWeeklyTask(),
-          const SizedBox(height: kSpacing),
-          WeeklyTask(
-            data: controller.weeklyTask,
-            onPressed: controller.onPressedTask,
-            onPressedAssign: controller.onPressedAssignTask,
-            onPressedMember: controller.onPressedMemberTask,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCalendarContent() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kSpacing),
-      child: Column(
-        children: [
-          const SizedBox(height: kSpacing),
-          Row(
-            children: [
-              const Expanded(child: HeaderText("Calendar")),
-              IconButton(
-                onPressed: controller.onPressedCalendar,
-                icon: const Icon(EvaIcons.calendarOutline),
-                tooltip: "calendar",
-              )
-            ],
-          ),
-          const SizedBox(height: kSpacing),
-          ...controller.taskGroup
-              .map(
-                (e) => TaskGroup(
-                  title: DateFormat('d MMMM').format(e[0].date),
-                  data: e,
-                  onPressed: controller.onPressedTaskGroup,
-                ),
-              )
-              .toList()
-        ],
-      ),
-    );
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 }

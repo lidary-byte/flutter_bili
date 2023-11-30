@@ -1,6 +1,5 @@
 import 'package:flutter_bili/constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SelectionButtonData {
   final IconData activeIcon;
@@ -21,8 +20,8 @@ class SelectionButton extends StatefulWidget {
     this.initialSelected = 0,
     required this.data,
     required this.onSelected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int initialSelected;
   final List<SelectionButtonData> data;
@@ -71,8 +70,8 @@ class _Button extends StatelessWidget {
     required this.selected,
     required this.data,
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool selected;
   final SelectionButtonData data;
@@ -91,9 +90,9 @@ class _Button extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: Row(
             children: [
-              _buildIcon(),
+              _buildIcon(context),
               const SizedBox(width: kSpacing / 2),
-              Expanded(child: _buildLabel()),
+              Expanded(child: _buildLabel(context)),
               if (data.totalNotif != null)
                 Padding(
                   padding: const EdgeInsets.only(left: kSpacing / 2),
@@ -106,23 +105,21 @@ class _Button extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon() {
+  Widget _buildIcon(BuildContext context) {
     return Icon(
       (!selected) ? data.icon : data.activeIcon,
       size: 20,
-      color: (!selected)
-          ? kFontColorPallets[1]
-          : Theme.of(Get.context!).primaryColor,
+      color:
+          (!selected) ? kFontColorPallets[1] : Theme.of(context).primaryColor,
     );
   }
 
-  Widget _buildLabel() {
+  Widget _buildLabel(BuildContext context) {
     return Text(
       data.label,
       style: TextStyle(
-        color: (!selected)
-            ? kFontColorPallets[1]
-            : Theme.of(Get.context!).primaryColor,
+        color:
+            (!selected) ? kFontColorPallets[1] : Theme.of(context).primaryColor,
         fontWeight: FontWeight.bold,
         letterSpacing: .8,
         fontSize: 14,

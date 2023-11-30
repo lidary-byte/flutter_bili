@@ -1,16 +1,24 @@
-import 'package:flutter_bili/pages/main/main_binding.dart';
 import 'package:flutter_bili/pages/main/main_page.dart';
-
-import 'package:get/get.dart';
+import 'package:flutter_bili/pages/video_details/video_details_page.dart';
+import 'package:go_router/go_router.dart';
 
 abstract class AppPages {
   static const mainPage = '/';
+  static const videoDetailsPage = '/video_details';
 
-  static final routes = [
-    GetPage(
-      name: mainPage,
-      page: () => const MainPage(),
-      binding: MainBinding(),
+  static final routes = GoRouter(routes: [
+    GoRoute(
+      path: mainPage,
+      builder: (context, state) => const MainPage(),
     ),
-  ];
+    GoRoute(
+      path: videoDetailsPage,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, String?>;
+        return VideoDetails(
+          bvid: extra['bvid'],
+        );
+      },
+    ),
+  ]);
 }

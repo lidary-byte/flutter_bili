@@ -1,13 +1,12 @@
 import 'package:flutter_bili/constants/app_constants.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-class SearchField extends StatelessWidget {
-  SearchField({
+class SearchWidget extends StatelessWidget {
+  SearchWidget({
     this.onSearch,
     this.hintText,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final controller = TextEditingController();
   final Function(String value)? onSearch;
@@ -18,11 +17,19 @@ class SearchField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        prefixIcon: const Icon(EvaIcons.search),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(width: .1),
+        contentPadding: const EdgeInsets.all(8.0),
+        hintText: '搜索',
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),
-        hintText: hintText ?? "search..",
+        // 未选中时候的颜色
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Colors.grey,
+          ),
+        ),
       ),
       onEditingComplete: () {
         FocusScope.of(context).unfocus();
