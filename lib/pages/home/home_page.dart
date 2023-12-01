@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bili/config/routes/app_pages.dart';
 import 'package:flutter_bili/pages/home/bloc/home_bloc.dart';
 import 'package:flutter_bili/pages/home/bloc/home_event.dart';
 import 'package:flutter_bili/pages/home/bloc/home_state.dart';
@@ -9,9 +7,7 @@ import 'package:flutter_bili/pages/home/widget/live_widget.dart';
 import 'package:flutter_bili/pages/home/widget/video_widget.dart';
 import 'package:flutter_bili/shared_components/responsive_builder.dart';
 import 'package:flutter_bili/widget/search_widget.dart';
-import 'package:flutter_bili/widget/status_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
