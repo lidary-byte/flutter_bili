@@ -1,22 +1,19 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavbar extends StatefulWidget {
-  const BottomNavbar({super.key, required this.onSelected});
+// ignore: must_be_immutable
+class BottomNavbar extends StatelessWidget {
+  int currentIndex = 0;
+
+  BottomNavbar(
+      {super.key, required this.onSelected, required this.currentIndex});
 
   final Function(int position) onSelected;
 
   @override
-  State<BottomNavbar> createState() => _BottomNavbarState();
-}
-
-class _BottomNavbarState extends State<BottomNavbar> {
-  int index = 0;
-
-  @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: index,
+      currentIndex: currentIndex,
       items: const [
         BottomNavigationBarItem(
           activeIcon: Icon(EvaIcons.home),
@@ -39,16 +36,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
           label: "Settings",
         ),
       ],
-      selectedItemColor: Theme.of(context).primaryColor,
-      unselectedItemColor: Theme.of(context).primaryColor.withOpacity(.5),
+      // selectedItemColor: Theme.of(context).primaryColor,
+      // unselectedItemColor: Theme.of(context).primaryColor.withOpacity(.5),
       type: BottomNavigationBarType.fixed,
       showUnselectedLabels: false,
-      onTap: (value) {
-        setState(() {
-          index = value;
-        });
-        widget.onSelected.call(index);
-      },
+      onTap: onSelected,
     );
   }
 }

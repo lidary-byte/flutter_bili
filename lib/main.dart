@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bili/http/dio_client.dart';
 
 import 'config/routes/app_pages.dart';
 import 'config/themes/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DioClient().init();
   runApp(const MyApp());
 }
 

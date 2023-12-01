@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bili/constants/app_constants.dart';
 import 'package:flutter_bili/shared_components/selection_button.dart';
 
+// ignore: must_be_immutable
 class SliderNavBar extends StatelessWidget {
-  const SliderNavBar({super.key, required this.onSelected});
+  int currentIndex = 0;
+  SliderNavBar(
+      {super.key, required this.currentIndex, required this.onSelected});
   final Function(int position) onSelected;
 
   @override
@@ -16,6 +19,7 @@ class SliderNavBar extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.all(10),
             child: SelectionButton(
+              initialSelected: currentIndex,
               data: [
                 SelectionButtonData(
                   activeIcon: EvaIcons.home,
