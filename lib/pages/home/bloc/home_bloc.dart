@@ -16,6 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           return _recommend(event, emit);
       }
     });
+    add(SwitchTabEvent(1));
   }
 
   Future _recommendLive(SwitchTabEvent event, emit) async {
@@ -23,7 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (state.recommendList?.isNotEmpty == true) {
       // 有旧数据 直接拿
-      emit(state.copyWith(netState: NetState.successState, index: 0));
+      emit(state.copyWith(netState: NetState.successState));
       return;
     }
 
@@ -37,10 +38,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (recommend.isSuccess) {
       emit(state.copyWith(
           netState: NetState.successState,
-          index: 0,
           recommendList: recommend.data?.list ?? []));
     } else {
-      emit(state.copyWith(netState: NetState.errorState, index: 0));
+      emit(state.copyWith(netState: NetState.errorState));
     }
   }
 
@@ -50,7 +50,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (state.recommend?.isNotEmpty == true) {
       // 有旧数据 直接拿
-      emit(state.copyWith(netState: NetState.successState, index: 1));
+      emit(state.copyWith(netState: NetState.successState));
       return;
     }
     // ps : 请求的个数
@@ -63,11 +63,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
     if (recommend.isSuccess) {
       emit(state.copyWith(
-          netState: NetState.successState,
-          index: 1,
-          recommend: recommend.data?.item));
+          netState: NetState.successState, recommend: recommend.data?.item));
     } else {
-      emit(state.copyWith(netState: NetState.errorState, index: 1));
+      emit(state.copyWith(netState: NetState.errorState));
     }
   }
 }

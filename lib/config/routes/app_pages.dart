@@ -5,7 +5,12 @@ import 'package:flutter_bili/pages/video_details/video_details_page.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppPages {
-  static const mainViewPager = [HomePage(), PersonPage()];
+  static const mainViewPager = [
+    HomePage(),
+    PersonPage(),
+    PersonPage(),
+    PersonPage(),
+  ];
 
   static const mainPage = '/';
   static const videoDetailsPage = '/video_details';

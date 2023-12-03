@@ -101,13 +101,13 @@ LiveRecommendList $LiveRecommendListFromJson(Map<String, dynamic> json) {
   if (areaName != null) {
     liveRecommendList.areaName = areaName;
   }
-  final int? areaV2ParentId =
-      jsonConvert.convert<int>(json['area_v2_parent_id']);
+  final int? areaV2ParentId = jsonConvert.convert<int>(
+      json['area_v2_parent_id']);
   if (areaV2ParentId != null) {
     liveRecommendList.areaV2ParentId = areaV2ParentId;
   }
-  final String? areaV2ParentName =
-      jsonConvert.convert<String>(json['area_v2_parent_name']);
+  final String? areaV2ParentName = jsonConvert.convert<String>(
+      json['area_v2_parent_name']);
   if (areaV2ParentName != null) {
     liveRecommendList.areaV2ParentName = areaV2ParentName;
   }
@@ -127,13 +127,13 @@ LiveRecommendList $LiveRecommendListFromJson(Map<String, dynamic> json) {
   if (groupId != null) {
     liveRecommendList.groupId = groupId;
   }
-  final String? showCallback =
-      jsonConvert.convert<String>(json['show_callback']);
+  final String? showCallback = jsonConvert.convert<String>(
+      json['show_callback']);
   if (showCallback != null) {
     liveRecommendList.showCallback = showCallback;
   }
-  final String? clickCallback =
-      jsonConvert.convert<String>(json['click_callback']);
+  final String? clickCallback = jsonConvert.convert<String>(
+      json['click_callback']);
   if (clickCallback != null) {
     liveRecommendList.clickCallback = clickCallback;
   }
@@ -145,18 +145,18 @@ LiveRecommendList $LiveRecommendListFromJson(Map<String, dynamic> json) {
   if (pkId != null) {
     liveRecommendList.pkId = pkId;
   }
-  final LiveRecommendListPendantInfo? pendantInfo =
-      jsonConvert.convert<LiveRecommendListPendantInfo>(json['pendant_info']);
+  final LiveRecommendListPendantInfo? pendantInfo = jsonConvert.convert<
+      LiveRecommendListPendantInfo>(json['pendant_info']);
   if (pendantInfo != null) {
     liveRecommendList.pendantInfo = pendantInfo;
   }
-  final LiveRecommendListVerify? verify =
-      jsonConvert.convert<LiveRecommendListVerify>(json['verify']);
+  final LiveRecommendListVerify? verify = jsonConvert.convert<
+      LiveRecommendListVerify>(json['verify']);
   if (verify != null) {
     liveRecommendList.verify = verify;
   }
-  final LiveRecommendListHeadBox? headBox =
-      jsonConvert.convert<LiveRecommendListHeadBox>(json['head_box']);
+  final LiveRecommendListHeadBox? headBox = jsonConvert.convert<
+      LiveRecommendListHeadBox>(json['head_box']);
   if (headBox != null) {
     liveRecommendList.headBox = headBox;
   }
@@ -172,8 +172,8 @@ LiveRecommendList $LiveRecommendListFromJson(Map<String, dynamic> json) {
   if (flag != null) {
     liveRecommendList.flag = flag;
   }
-  final LiveRecommendListWatchedShow? watchedShow =
-      jsonConvert.convert<LiveRecommendListWatchedShow>(json['watched_show']);
+  final LiveRecommendListWatchedShow? watchedShow = jsonConvert.convert<
+      LiveRecommendListWatchedShow>(json['watched_show']);
   if (watchedShow != null) {
     liveRecommendList.watchedShow = watchedShow;
   }
@@ -314,10 +314,9 @@ extension LiveRecommendListExtension on LiveRecommendList {
 
 LiveRecommendListPendantInfo $LiveRecommendListPendantInfoFromJson(
     Map<String, dynamic> json) {
-  final LiveRecommendListPendantInfo liveRecommendListPendantInfo =
-      LiveRecommendListPendantInfo();
-  final LiveRecommendListPendantInfo2? info2 =
-      jsonConvert.convert<LiveRecommendListPendantInfo2>(json['2']);
+  final LiveRecommendListPendantInfo liveRecommendListPendantInfo = LiveRecommendListPendantInfo();
+  final LiveRecommendListPendantInfo2? info2 = jsonConvert.convert<
+      LiveRecommendListPendantInfo2>(json['2']);
   if (info2 != null) {
     liveRecommendListPendantInfo.info2 = info2;
   }
@@ -327,16 +326,22 @@ LiveRecommendListPendantInfo $LiveRecommendListPendantInfoFromJson(
 Map<String, dynamic> $LiveRecommendListPendantInfoToJson(
     LiveRecommendListPendantInfo entity) {
   final Map<String, dynamic> data = <String, dynamic>{};
+  data['2'] = entity.info2?.toJson();
   return data;
 }
 
-extension LiveRecommendListPendantInfoExtension
-    on LiveRecommendListPendantInfo {}
+extension LiveRecommendListPendantInfoExtension on LiveRecommendListPendantInfo {
+  LiveRecommendListPendantInfo copyWith({
+    LiveRecommendListPendantInfo2? info2,
+  }) {
+    return LiveRecommendListPendantInfo()
+      ..info2 = info2 ?? this.info2;
+  }
+}
 
 LiveRecommendListPendantInfo2 $LiveRecommendListPendantInfo2FromJson(
     Map<String, dynamic> json) {
-  final LiveRecommendListPendantInfo2 liveRecommendListPendantInfo2 =
-      LiveRecommendListPendantInfo2();
+  final LiveRecommendListPendantInfo2 liveRecommendListPendantInfo2 = LiveRecommendListPendantInfo2();
   final int? pendentId = jsonConvert.convert<int>(json['pendent_id']);
   if (pendentId != null) {
     liveRecommendListPendantInfo2.pendentId = pendentId;
@@ -381,8 +386,7 @@ Map<String, dynamic> $LiveRecommendListPendantInfo2ToJson(
   return data;
 }
 
-extension LiveRecommendListPendantInfo2Extension
-    on LiveRecommendListPendantInfo2 {
+extension LiveRecommendListPendantInfo2Extension on LiveRecommendListPendantInfo2 {
   LiveRecommendListPendantInfo2 copyWith({
     int? pendentId,
     String? content,
@@ -405,8 +409,7 @@ extension LiveRecommendListPendantInfo2Extension
 
 LiveRecommendListVerify $LiveRecommendListVerifyFromJson(
     Map<String, dynamic> json) {
-  final LiveRecommendListVerify liveRecommendListVerify =
-      LiveRecommendListVerify();
+  final LiveRecommendListVerify liveRecommendListVerify = LiveRecommendListVerify();
   final int? role = jsonConvert.convert<int>(json['role']);
   if (role != null) {
     liveRecommendListVerify.role = role;
@@ -446,8 +449,7 @@ extension LiveRecommendListVerifyExtension on LiveRecommendListVerify {
 
 LiveRecommendListHeadBox $LiveRecommendListHeadBoxFromJson(
     Map<String, dynamic> json) {
-  final LiveRecommendListHeadBox liveRecommendListHeadBox =
-      LiveRecommendListHeadBox();
+  final LiveRecommendListHeadBox liveRecommendListHeadBox = LiveRecommendListHeadBox();
   final String? name = jsonConvert.convert<String>(json['name']);
   if (name != null) {
     liveRecommendListHeadBox.name = name;
@@ -487,8 +489,7 @@ extension LiveRecommendListHeadBoxExtension on LiveRecommendListHeadBox {
 
 LiveRecommendListWatchedShow $LiveRecommendListWatchedShowFromJson(
     Map<String, dynamic> json) {
-  final LiveRecommendListWatchedShow liveRecommendListWatchedShow =
-      LiveRecommendListWatchedShow();
+  final LiveRecommendListWatchedShow liveRecommendListWatchedShow = LiveRecommendListWatchedShow();
   final bool? switchBoolean = jsonConvert.convert<bool>(json['switch']);
   if (switchBoolean != null) {
     liveRecommendListWatchedShow.switchBoolean = switchBoolean;
@@ -523,6 +524,7 @@ LiveRecommendListWatchedShow $LiveRecommendListWatchedShowFromJson(
 Map<String, dynamic> $LiveRecommendListWatchedShowToJson(
     LiveRecommendListWatchedShow entity) {
   final Map<String, dynamic> data = <String, dynamic>{};
+  data['switch'] = entity.switchBoolean;
   data['num'] = entity.num;
   data['text_small'] = entity.textSmall;
   data['text_large'] = entity.textLarge;
@@ -532,9 +534,9 @@ Map<String, dynamic> $LiveRecommendListWatchedShowToJson(
   return data;
 }
 
-extension LiveRecommendListWatchedShowExtension
-    on LiveRecommendListWatchedShow {
+extension LiveRecommendListWatchedShowExtension on LiveRecommendListWatchedShow {
   LiveRecommendListWatchedShow copyWith({
+    bool? switchBoolean,
     int? num,
     String? textSmall,
     String? textLarge,
@@ -543,6 +545,7 @@ extension LiveRecommendListWatchedShowExtension
     String? iconWeb,
   }) {
     return LiveRecommendListWatchedShow()
+      ..switchBoolean = switchBoolean ?? this.switchBoolean
       ..num = num ?? this.num
       ..textSmall = textSmall ?? this.textSmall
       ..textLarge = textLarge ?? this.textLarge

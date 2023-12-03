@@ -1,16 +1,20 @@
 import 'package:flutter_bili/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 
-class SearchWidget extends StatelessWidget {
-  SearchWidget({
-    this.onSearch,
+// ignore: must_be_immutable
+class Input extends StatelessWidget {
+  TextEditingController? controller;
+  final Function(String value)? onEditingComplete;
+  final String? hintText;
+
+  Input({
+    this.onEditingComplete,
+    this.controller,
     this.hintText,
     super.key,
-  });
-
-  final controller = TextEditingController();
-  final Function(String value)? onSearch;
-  final String? hintText;
+  }) {
+    controller ??= TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class SearchWidget extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(8.0),
-        hintText: '搜索',
+        hintText: hintText,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
@@ -33,7 +37,9 @@ class SearchWidget extends StatelessWidget {
       ),
       onEditingComplete: () {
         FocusScope.of(context).unfocus();
-        if (onSearch != null) onSearch!(controller.text);
+        if (onEditingComplete != null) {
+          onEditingComplete!(controller?.text ?? '');
+        }
       },
       textInputAction: TextInputAction.search,
       style: TextStyle(color: kFontColorPallets[1]),

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bili/http/dio_client.dart';
 
@@ -21,16 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter BiliBili',
       theme: AppTheme.basic,
       routerConfig: AppPages.routes,
-      scrollBehavior: CustomScrollBehaviour(),
       debugShowCheckedModeBanner: false,
     );
   }
-}
-
-class CustomScrollBehaviour extends MaterialScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-      };
 }
