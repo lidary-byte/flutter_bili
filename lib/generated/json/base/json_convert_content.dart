@@ -6,8 +6,10 @@
 import 'package:flutter/material.dart' show debugPrint;
 import 'package:flutter_bili/http/entity/captcha_entity.dart';
 import 'package:flutter_bili/http/entity/live_recommend_entity.dart';
+import 'package:flutter_bili/http/entity/login_qrcode_status_entity.dart';
 import 'package:flutter_bili/http/entity/qrcode_generate_entity.dart';
 import 'package:flutter_bili/http/entity/recommend_entity.dart';
+import 'package:flutter_bili/http/entity/user_info_entity.dart';
 import 'package:flutter_bili/http/entity/video_details_entity.dart';
 import 'package:flutter_bili/http/entity/web_key_entity.dart';
 
@@ -173,6 +175,10 @@ class JsonConvert {
       return data.map<LiveRecommendListWatchedShow>((Map<String, dynamic> e) =>
           LiveRecommendListWatchedShow.fromJson(e)).toList() as M;
     }
+    if (<LoginQrcodeStatusEntity>[] is M) {
+      return data.map<LoginQrcodeStatusEntity>((Map<String, dynamic> e) =>
+          LoginQrcodeStatusEntity.fromJson(e)).toList() as M;
+    }
     if (<QrcodeGenerateEntity>[] is M) {
       return data.map<QrcodeGenerateEntity>((Map<String, dynamic> e) =>
           QrcodeGenerateEntity.fromJson(e)).toList() as M;
@@ -200,6 +206,42 @@ class JsonConvert {
     if (<RecommendAbtest>[] is M) {
       return data.map<RecommendAbtest>((Map<String, dynamic> e) =>
           RecommendAbtest.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoEntity>[] is M) {
+      return data.map<UserInfoEntity>((Map<String, dynamic> e) =>
+          UserInfoEntity.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoLevelInfo>[] is M) {
+      return data.map<UserInfoLevelInfo>((Map<String, dynamic> e) =>
+          UserInfoLevelInfo.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoOfficial>[] is M) {
+      return data.map<UserInfoOfficial>((Map<String, dynamic> e) =>
+          UserInfoOfficial.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoOfficialVerify>[] is M) {
+      return data.map<UserInfoOfficialVerify>((Map<String, dynamic> e) =>
+          UserInfoOfficialVerify.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoPendant>[] is M) {
+      return data.map<UserInfoPendant>((Map<String, dynamic> e) =>
+          UserInfoPendant.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoVipLabel>[] is M) {
+      return data.map<UserInfoVipLabel>((Map<String, dynamic> e) =>
+          UserInfoVipLabel.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoVip>[] is M) {
+      return data.map<UserInfoVip>((Map<String, dynamic> e) =>
+          UserInfoVip.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoWallet>[] is M) {
+      return data.map<UserInfoWallet>((Map<String, dynamic> e) =>
+          UserInfoWallet.fromJson(e)).toList() as M;
+    }
+    if (<UserInfoWbiImg>[] is M) {
+      return data.map<UserInfoWbiImg>((Map<String, dynamic> e) =>
+          UserInfoWbiImg.fromJson(e)).toList() as M;
     }
     if (<VideoDetailsEntity>[] is M) {
       return data.map<VideoDetailsEntity>((Map<String, dynamic> e) =>
@@ -312,6 +354,7 @@ class JsonConvertClassCollection {
     (LiveRecommendListHeadBox).toString(): LiveRecommendListHeadBox.fromJson,
     (LiveRecommendListWatchedShow).toString(): LiveRecommendListWatchedShow
         .fromJson,
+    (LoginQrcodeStatusEntity).toString(): LoginQrcodeStatusEntity.fromJson,
     (QrcodeGenerateEntity).toString(): QrcodeGenerateEntity.fromJson,
     (RecommendEntity).toString(): RecommendEntity.fromJson,
     (RecommendItem).toString(): RecommendItem.fromJson,
@@ -319,6 +362,15 @@ class JsonConvertClassCollection {
     (RecommendItemStat).toString(): RecommendItemStat.fromJson,
     (RecommendItemRcmdReason).toString(): RecommendItemRcmdReason.fromJson,
     (RecommendAbtest).toString(): RecommendAbtest.fromJson,
+    (UserInfoEntity).toString(): UserInfoEntity.fromJson,
+    (UserInfoLevelInfo).toString(): UserInfoLevelInfo.fromJson,
+    (UserInfoOfficial).toString(): UserInfoOfficial.fromJson,
+    (UserInfoOfficialVerify).toString(): UserInfoOfficialVerify.fromJson,
+    (UserInfoPendant).toString(): UserInfoPendant.fromJson,
+    (UserInfoVipLabel).toString(): UserInfoVipLabel.fromJson,
+    (UserInfoVip).toString(): UserInfoVip.fromJson,
+    (UserInfoWallet).toString(): UserInfoWallet.fromJson,
+    (UserInfoWbiImg).toString(): UserInfoWbiImg.fromJson,
     (VideoDetailsEntity).toString(): VideoDetailsEntity.fromJson,
     (VideoDetailsDescV2).toString(): VideoDetailsDescV2.fromJson,
     (VideoDetailsRights).toString(): VideoDetailsRights.fromJson,

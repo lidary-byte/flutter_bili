@@ -18,3 +18,15 @@ class LoginEvent extends PersonEvent {
   @override
   List<Object?> get props => [username, password];
 }
+
+class RefreshQrCodeEvent extends PersonEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class QrCodeStatusEvent extends PersonEvent {
+  int? code;
+  QrCodeStatusEvent({this.code});
+  @override
+  List<Object?> get props => [code];
+}
